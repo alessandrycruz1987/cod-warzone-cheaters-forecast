@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 import { CodWarzoneCheatersForecastJsonService } from '../services/get/cod-warzone-cheaters-forecast-json.service';
 
@@ -34,22 +35,20 @@ export class HomePage {
   }
 
   async getCodWarzoneCheatersForecast(target: any | undefined) {
-    console.log('HOME PAGE - GETTING FORECAST...');
+    console.info('HOME PAGE - GETTING FORECAST...');
 
-    await this.codWarzoneCheatersForecastJsonService.getCodWarzoneCheatersForecast().toPromise().then(data => {
-      console.info('HOME PAGE - FORECAST RESULT:', data);
+    const data: any = await firstValueFrom(this.codWarzoneCheatersForecastJsonService.getCodWarzoneCheatersForecast());
 
-      this.game_title = data.game_title;
-      this.forecast_title = data.forecast_title;
-      this.forecast_message = data.forecast_message;
-      this.playability_title = data.playability_title;
-      this.playability_value = data.playability_value;
-      this.cheaters_index_title = data.cheaters_index_title;
-      this.cheaters_index_value = data.cheaters_index_value;
+    console.info('HOME PAGE - FORECAST RESULT:', data);
 
-      if (target != null) target.complete();
-    }).catch((error) => {
-      console.log('HOME PAGE - ERROR:', error);
-    });
+    this.game_title = data.game_title;
+    this.forecast_title = data.forecast_title;
+    this.forecast_message = data.forecast_message;
+    this.playability_title = data.playability_title;
+    this.playability_value = data.playability_value;
+    this.cheaters_index_title = data.cheaters_index_title;
+    this.cheaters_index_value = data.cheaters_index_value;
+
+    if (target != null) target.complete();
   }
 }
