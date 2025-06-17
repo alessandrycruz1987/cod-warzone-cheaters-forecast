@@ -6,33 +6,38 @@ import { CodWarzoneCheatersForecastJsonService } from '../services/get/cod-warzo
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
+  standalone: false
 })
 export class HomePage {
-  public game_title: string;
-  public forecast_title: string;
-  public forecast_message: string;
-  public playability_title: string;
-  public playability_value: string;
-  public cheaters_index_title: string;
-  public cheaters_index_value: string;
+  public game_title: string | undefined;
+  public forecast_title: string | undefined;
+  public forecast_message: string | undefined;
+  public playability_title: string | undefined;
+  public playability_value: string | undefined;
+  public cheaters_index_title: string | undefined;
+  public cheaters_index_value: string | undefined;
 
-  constructor(private codWarzoneCheatersForecastJsonService: CodWarzoneCheatersForecastJsonService) { }
+  constructor(
+    private codWarzoneCheatersForecastJsonService: CodWarzoneCheatersForecastJsonService
+  ) { }
 
-  ngOnInit() {
-    this.getCodWarzoneCheatersForecast(null);
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.getCodWarzoneCheatersForecast(undefined);
   }
 
-  onRefresh(event) {
-    console.log('Refreshing...');
+  onRefresh(event: any) {
+    console.info('HOME PAGE - REFRESHING...');
 
-    this.getCodWarzoneCheatersForecast(event.target);
+    this.getCodWarzoneCheatersForecast(event?.target);
   }
 
-  async getCodWarzoneCheatersForecast(target) {
-    console.log('Getting forecast...');
+  async getCodWarzoneCheatersForecast(target: any | undefined) {
+    console.log('HOME PAGE - GETTING FORECAST...');
 
     await this.codWarzoneCheatersForecastJsonService.getCodWarzoneCheatersForecast().toPromise().then(data => {
-      console.log('Forecast result:', JSON.stringify(data));
+      console.info('HOME PAGE - FORECAST RESULT:', data);
 
       this.game_title = data.game_title;
       this.forecast_title = data.forecast_title;
@@ -42,9 +47,9 @@ export class HomePage {
       this.cheaters_index_title = data.cheaters_index_title;
       this.cheaters_index_value = data.cheaters_index_value;
 
-      if (target !== null && typeof target !== 'undefined') target.complete();
+      if (target != null) target.complete();
     }).catch((error) => {
-      console.log('Error in fetching forecast:', error);
+      console.log('HOME PAGE - ERROR:', error);
     });
   }
 }
