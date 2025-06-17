@@ -1,6 +1,10 @@
+// @
 import { Component } from '@angular/core';
+
+// OTHERS
 import { firstValueFrom } from 'rxjs';
 
+// SERVICES
 import { CodWarzoneCheatersForecastJsonService } from '../services/get/cod-warzone-cheaters-forecast-json.service';
 
 @Component({
